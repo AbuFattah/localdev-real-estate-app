@@ -42,15 +42,13 @@ cd localdev-real-estate-app
 npm link
 ```
 
-This creates symlink to the `dt` (dockertool) command.
+This creates a global symlink to the `dt` (dockertool) command, so it can be run from any directory.
 
 ### 4. Environment Initialization
 
-To start the Dockerized environment, you must be in the localdev-real-estate-app directory:
-
+The Dockerized environment is started with:
 
 ```bash
-cd localdev-real-estate-app
 dt up
 ```
 

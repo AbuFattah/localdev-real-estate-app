@@ -1,6 +1,15 @@
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import path from 'path';
 dotenv.config();
+
+console.log(process.cwd())
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+console.log(__dirname)
 
 // Connection URL
 const url = `mongodb://admin:123123@localhost:27017/real_estate_db?authSource=admin`;

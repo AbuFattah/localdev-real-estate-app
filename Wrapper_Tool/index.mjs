@@ -4,6 +4,13 @@ import { Command } from 'commander';
 import { execa } from 'execa';
 import chalk, { Chalk } from 'chalk';
 import readline from 'readline';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const dcomposePath = path.resolve(__dirname, '../', 'docker-compose.yml');
 
 const program = new Command();
 
@@ -79,7 +86,7 @@ async function cleanVolume() {
 async function localDown() {
   try {
     console.log('Bringing down local environment...');
-    await execa('docker', ['compose', 'down'], { stdio: 'inherit' });
+    await execa('docker', ['compose','-f',`${dcomposePath}`, 'down'], { stdio: 'inherit' });
     console.log('Docker Compose down complete.');
   } catch (error) {
     console.error('Error executing Docker Compose down:', error);
@@ -110,7 +117,7 @@ async function cleandb() {
 async function showLogs(service) {
   try {
     console.log(`Fetching logs for service: ${service}`);
-    await execa('docker-compose', ['logs', service], { stdio: 'inherit' });
+    await execa('docker-compose', ['-f',`${dcomposePath}`,'logs', service], { stdio: 'inherit' });
   } catch (error) {
     console.error(`Error fetching logs for ${service}:`, error);
   }
@@ -128,7 +135,7 @@ program
   .action(async (cmd, options) => {
     try {
       const additionalArgs = process.argv.slice(program.args.length + 2);
-      const args = ['up', '-d'];
+      const args = ['-f',`${dcomposePath}`,'up', '-d'];
 
       if (options.redo) {
         args.push('--build', '--force-recreate');
